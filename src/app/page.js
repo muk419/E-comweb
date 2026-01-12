@@ -1,16 +1,18 @@
-import Image from "next/image";
-import LoginPage from "./Login/page";
-import RegisterPage from "./Register/page";
-export default function Home() {
-  return (
-    <>
-      <main>
-        <h1>Welcome to App</h1>
-        <p>Please login or register</p>
+"use client";
+import { useAuth } from "@/context/AuthContext";
+import DashboardPage from "./Dashboard/page";
+import GuestDashboard from "@/components/GuestDashboard";
 
-        <a href="/Login">Login</a>
-        <a href="/Register">Register</a>
-      </main>
-    </>
-  );
+export default function Home() {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#0f172a]">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+      </div>
+    );
+  }
+
+  return user ? <DashboardPage /> : <GuestDashboard />;
 }

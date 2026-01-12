@@ -2,12 +2,14 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
-const SESSION_TIME = 30;
+import { useAuth } from "@/context/AuthContext";
+
 export default function LoginPage() {
   const router = useRouter();
+  const { login } = useAuth();
+
   const [formData, setFormData] = useState({
-    username: "",
+    username: "", // Changed from username to email to match the input field
     password: "",
   })
 
@@ -18,37 +20,43 @@ export default function LoginPage() {
       [name]: value
     }))
   }
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData)
+    console.log("Attempting login with:", formData)
+
     try {
       const response = await fetch("https://api.freeapi.app/api/v1/users/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          username: formData.username, // Adjusting to match API expectations if necessary, or keeping it as is
+          password: formData.password
+        }),
       })
+
       if (!response.ok) {
-        throw new Error("Login failed")
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Login failed");
       }
-      const data = await response.json()
-      console.log("Login Success:", data)
-      router.push("/")
 
-      cookies.set("accessToken", result.data.accessToken, {
-        expires: SESSION_TIME / 1440,
-        secure: true,      // Only sent over HTTPS
-        sameSite: 'strict', // Prevents the cookie from being sent on cross-site requests
-        path: '/'          // Makes the cookie available across your entire site
-      });
+      const data = await response.json();
+      console.log("Login Success:", data);
 
-      localStorage.setItem("loginTime", Date.now());
-      router.push("/")
+      // Use the centralized login method from AuthContext
+      // data.data.user and data.data.accessToken are common patterns for this API
+      if (data.data && data.data.accessToken) {
+        login(data.data.user, data.data.accessToken);
+        router.push("/Dashboard");
+      } else {
+        throw new Error("Invalid response format from server");
+      }
     }
     catch (error) {
-      console.log(error)
+      console.log("Login Error:", error.message);
+      alert(error.message);
     }
   };
 
@@ -79,10 +87,10 @@ export default function LoginPage() {
               </label>
               <input
                 type="username"
-                name="email"
-                value={formData.email}
+                name="username"
+                value={formData.username}
                 onChange={handleChange}
-                autoComplete="email"
+                autoComplete="username"
                 placeholder="hello@example.com"
                 className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-2xl text-white placeholder-white/30 outline-hidden transition-all duration-300"
                 required
@@ -132,7 +140,7 @@ export default function LoginPage() {
           <div className="mt-8 pt-8 border-t border-white/10 text-center">
             <p className="text-white/60 font-medium text-sm">
               New here?{" "}
-              <Link href="#" className="text-white font-bold hover:underline transition-all">
+              <Link href="/Register" className="text-white font-bold hover:underline transition-all">
                 Create an account
               </Link>
             </p>

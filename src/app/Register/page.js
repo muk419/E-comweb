@@ -30,6 +30,9 @@ export default function RegisterPage() {
         },
         body: JSON.stringify(formData),
       })
+      if (response.status === 422) {
+        alert("Username must in capital letter")
+      }
       if (!response.ok) {
         throw new Error("Login failed")
       }
