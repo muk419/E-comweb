@@ -23,7 +23,7 @@ export default function RegisterPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("https://api.freeapi.app/api/v1/users/register", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
