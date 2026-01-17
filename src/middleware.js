@@ -5,20 +5,20 @@ export function middleware(request) {
   const { pathname } = request.nextUrl;
 
   // Paths that don't require authentication
-  const publicPaths = ['/', '/Login', '/Register', '/favicon.ico'];
+  const publicPaths = ['/', '/login', '/register', '/favicon.ico'];
 
   // Check if the current path is public
   const isPublicPath = publicPaths.includes(pathname);
 
   // If user is not authenticated and trying to access a protected route
   if (!token && !isPublicPath) {
-    const loginUrl = new URL('/Login', request.url);
+    const loginUrl = new URL('/login', request.url);
     // loginUrl.searchParams.set('from', pathname); // Optional: redirect back after login
     return NextResponse.redirect(loginUrl);
   }
 
-  // If user is authenticated and trying to access Login/Register pages, redirect to home
-  if (token && (pathname === '/Login' || pathname === '/Register')) {
+  // If user is authenticated and trying to access login/register pages, redirect to home
+  if (token && (pathname === '/login' || pathname === '/register')) {
     return NextResponse.redirect(new URL('/', request.url));
   }
 

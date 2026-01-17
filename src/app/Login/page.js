@@ -9,7 +9,7 @@ export default function LoginPage() {
   const { login } = useAuth();
 
   const [formData, setFormData] = useState({
-    username: "", // Changed from username to email to match the input field
+    username: "",
     password: "",
   })
 
@@ -23,8 +23,6 @@ export default function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Attempting login with:", formData)
-
     try {
       const response = await fetch("https://api.freeapi.app/api/v1/users/login", {
         method: "POST",
@@ -32,7 +30,7 @@ export default function LoginPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username: formData.username, // Adjusting to match API expectations if necessary, or keeping it as is
+          username: formData.username,
           password: formData.password
         }),
       })
@@ -43,10 +41,6 @@ export default function LoginPage() {
       }
 
       const data = await response.json();
-      console.log("Login Success:", data);
-
-      // Use the centralized login method from AuthContext
-      // data.data.user and data.data.accessToken are common patterns for this API
       if (data.data && data.data.accessToken) {
         login(data.data.user, data.data.accessToken);
         router.push("/Dashboard");
@@ -55,95 +49,80 @@ export default function LoginPage() {
       }
     }
     catch (error) {
-      console.log("Login Error:", error.message);
       alert(error.message);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-indigo-600 via-purple-600 to-pink-500 p-4">
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-white/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-white/10 rounded-full blur-3xl animate-pulse"></div>
-      </div>
-
-      <div className="relative w-full max-w-md">
-        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-8 shadow-2xl overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-transparent via-white/40 to-transparent"></div>
-
-          <div className="mb-10 text-center">
-            <h1 className="text-4xl font-extrabold text-white mb-2 tracking-tight">
-              Welcome Back
-            </h1>
-            <p className="text-white/70 font-medium">
-              Please enter your details to sign in
-            </p>
+    <div className="min-h-screen bg-[#f1f3f6] flex items-center justify-center p-4">
+      <div className="w-full max-w-[850px] bg-white shadow-2xl rounded-sm overflow-hidden flex flex-col md:flex-row min-h-[520px]">
+        {/* Left Section - Info */}
+        <div className="md:w-2/5 bg-[#2874f0] p-10 flex flex-col text-white">
+          <h2 className="text-3xl font-semibold mb-6">Login</h2>
+          <p className="text-lg leading-relaxed text-[#dbdbdb] font-medium">
+            Get access to your Orders, Wishlist and Recommendations
+          </p>
+          <div className="mt-auto">
+            <img
+              src="https://static-assets-web.flixcart.com/fk-p-flap/278/278/image/7593e7b6640c7c34.jpg?q=90"
+              alt="Login illustration"
+              className="w-full opacity-50 contrast-125"
+            />
           </div>
+        </div>
 
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            <div className="group">
-              <label className="block text-sm font-semibold text-white/90 mb-2 transition-colors group-focus-within:text-white">
-                Email Address
-              </label>
+        {/* Right Section - Form */}
+        <div className="md:w-3/5 p-10 bg-white flex flex-col">
+          <form onSubmit={handleSubmit} className="flex-1">
+            <div className="mb-6 relative">
               <input
-                type="username"
+                type="text"
                 name="username"
                 value={formData.username}
                 onChange={handleChange}
-                autoComplete="username"
-                placeholder="hello@example.com"
-                className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-2xl text-white placeholder-white/30 outline-hidden transition-all duration-300"
                 required
+                className="w-full border-b border-gray-300 py-3 focus:outline-none focus:border-[#2874f0] peer transition-all text-sm"
+                placeholder=" "
               />
-
-            </div>
-
-            <div className="group">
-              <div className="flex justify-between items-center mb-2">
-                <label className="text-sm font-semibold text-white/90 transition-colors group-focus-within:text-white">
-                  Password
-                </label>
-                <a href="#" className="text-xs font-bold text-white/60 hover:text-white transition-colors">
-                  Forgot?
-                </a>
-              </div>
-              <input
-                onChange={handleChange}
-                value={formData.password}
-                name="password"
-                type="password"
-                placeholder="••••••••"
-                className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-2xl text-white placeholder-white/30 outline-hidden transition-all duration-300 focus:bg-white/10 focus:border-white/30 focus:ring-2 focus:ring-white/20"
-                required
-              />
-            </div>
-
-            <div className="flex items-center">
-              <input
-                id="remember"
-                type="checkbox"
-                className="w-4 h-4 rounded-sm border-white/20 bg-white/5 text-purple-600 focus:ring-offset-0 focus:ring-white/20"
-              />
-              <label htmlFor="remember" className="ml-2 text-sm font-medium text-white/70 cursor-pointer select-none">
-                Stay signed in for 30 days
+              <label className="absolute left-0 top-3 text-gray-500 text-sm transition-all pointer-events-none peer-focus:-top-4 peer-focus:text-xs peer-focus:text-[#2874f0] peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:text-xs">
+                Enter Email/Mobile number
               </label>
             </div>
 
+            <div className="mb-8 relative">
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+                className="w-full border-b border-gray-300 py-3 focus:outline-none focus:border-[#2874f0] peer transition-all text-sm"
+                placeholder=" "
+              />
+              <label className="absolute left-0 top-3 text-gray-500 text-sm transition-all pointer-events-none peer-focus:-top-4 peer-focus:text-xs peer-focus:text-[#2874f0] peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:text-xs">
+                Enter Password
+              </label>
+              <div className="mt-2 text-right">
+                <a href="#" className="text-[#2874f0] text-xs font-semibold">Forgot?</a>
+              </div>
+            </div>
+
+            <p className="text-[12px] text-gray-500 mb-6 leading-relaxed">
+              By continuing, you agree to Flipkart's <a href="#" className="text-[#2874f0]">Terms of Use</a> and <a href="#" className="text-[#2874f0]">Privacy Policy</a>.
+            </p>
+
             <button
               type="submit"
-              className="w-full py-4 bg-white text-indigo-600 font-bold rounded-2xl shadow-lg hover:shadow-white/10 hover:mt-[-2px] active:mt-[1px] transition-all duration-300 transform"
+              className="w-full py-3.5 bg-[#fb641b] text-white font-bold rounded-sm shadow-md hover:bg-[#e65c19] transition-colors mb-4 text-sm"
             >
-              Sign In
+              Login
             </button>
           </form>
 
-          <div className="mt-8 pt-8 border-t border-white/10 text-center">
-            <p className="text-white/60 font-medium text-sm">
-              New here?{" "}
-              <Link href="/Register" className="text-white font-bold hover:underline transition-all">
-                Create an account
-              </Link>
-            </p>
+          <div className="mt-auto text-center">
+            <Link href="/Register" className="text-[#2874f0] text-sm font-bold hover:underline">
+              New to Flipkart? Create an account
+            </Link>
           </div>
         </div>
       </div>

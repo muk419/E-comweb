@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }) => {
     Cookies.remove("accessToken");
     localStorage.removeItem("loginTime");
     setUser(null);
-    router.push("/Login");
+    router.push("/login");
   };
 
   return (

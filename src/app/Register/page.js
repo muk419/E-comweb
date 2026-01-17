@@ -8,7 +8,7 @@ export default function RegisterPage() {
     username: "",
     email: "",
     password: "",
-    role: "",
+    role: "USER",
   })
   const router = useRouter();
 
@@ -31,13 +31,12 @@ export default function RegisterPage() {
         body: JSON.stringify(formData),
       })
       if (response.status === 422) {
-        alert("Username must in capital letter")
+        alert("Username must be in capital letters")
       }
       if (!response.ok) {
-        throw new Error("Login failed")
+        throw new Error("Registration failed")
       }
       const data = await response.json()
-      console.log("Login Success:", data)
       router.push("/Login")
     }
     catch (error) {
@@ -46,107 +45,102 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-indigo-600 via-purple-600 to-pink-500 p-4">
-      {/* Background Orbs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-white/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-white/10 rounded-full blur-3xl animate-pulse"></div>
-      </div>
-
-      <div className="relative w-full max-w-md">
-        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-8 shadow-2xl overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-transparent via-white/40 to-transparent"></div>
-
-          <div className="mb-8 text-center">
-            <h1 className="text-4xl font-extrabold text-white mb-2 tracking-tight">
-              Create Account
-            </h1>
-            <p className="text-white/70 font-medium">
-              Join us and start your journey
-            </p>
+    <div className="min-h-screen bg-[#f1f3f6] flex items-center justify-center p-4">
+      <div className="w-full max-w-[850px] bg-white shadow-2xl rounded-sm overflow-hidden flex flex-col md:flex-row min-h-[600px]">
+        {/* Left Section - Info */}
+        <div className="md:w-2/5 bg-[#2874f0] p-10 flex flex-col text-white">
+          <h2 className="text-3xl font-semibold mb-6">Looks like you're new here!</h2>
+          <p className="text-lg leading-relaxed text-[#dbdbdb] font-medium">
+            Sign up with your mobile number to get started
+          </p>
+          <div className="mt-auto">
+            <img
+              src="https://static-assets-web.flixcart.com/fk-p-flap/278/278/image/7593e7b6640c7c34.jpg?q=90"
+              alt="Register illustration"
+              className="w-full opacity-50 contrast-125 translate-y-10"
+            />
           </div>
+        </div>
 
-          <form className="space-y-5" onSubmit={handleSubmit}>
-            {/* Username Field */}
-            <div className="group">
-              <label className="block text-sm font-semibold text-white/90 mb-2 transition-colors group-focus-within:text-white">
-                Username
-              </label>
+        {/* Right Section - Form */}
+        <div className="md:w-3/5 p-10 bg-white flex flex-col">
+          <form onSubmit={handleSubmit} className="flex-1 space-y-6">
+            <div className="relative">
               <input
                 type="text"
                 name="username"
                 value={formData.username}
                 onChange={handleChange}
-                placeholder="doejohn"
-                className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-2xl text-white placeholder-white/30 outline-hidden transition-all duration-300"
                 required
+                className="w-full border-b border-gray-300 py-3 focus:outline-none focus:border-[#2874f0] peer transition-all text-sm"
+                placeholder=" "
               />
+              <label className="absolute left-0 top-3 text-gray-500 text-sm transition-all pointer-events-none peer-focus:-top-4 peer-focus:text-xs peer-focus:text-[#2874f0] peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:text-xs">
+                Enter Username (Capital)
+              </label>
             </div>
 
-            {/* Email Field */}
-            <div className="group">
-              <label className="block text-sm font-semibold text-white/90 mb-2 transition-colors group-focus-within:text-white">
-                Email Address
-              </label>
+            <div className="relative">
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                placeholder="hello@example.com"
-                className="w-full px-5 py-3.5 bg-white/5 border border-white/10 rounded-2xl text-white placeholder-white/30 outline-hidden transition-all duration-300 focus:bg-white/10 focus:border-white/30 focus:ring-2 focus:ring-white/20"
                 required
+                className="w-full border-b border-gray-300 py-3 focus:outline-none focus:border-[#2874f0] peer transition-all text-sm"
+                placeholder=" "
               />
+              <label className="absolute left-0 top-3 text-gray-500 text-sm transition-all pointer-events-none peer-focus:-top-4 peer-focus:text-xs peer-focus:text-[#2874f0] peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:text-xs">
+                Enter Email Address
+              </label>
             </div>
 
-            {/* Password Field */}
-            <div className="group">
-              <label className="block text-sm font-semibold text-white/90 mb-2 transition-colors group-focus-within:text-white">
-                Password
-              </label>
+            <div className="relative">
               <input
                 type="password"
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                placeholder="••••••••"
-                className="w-full px-5 py-3.5 bg-white/5 border border-white/10 rounded-2xl text-white placeholder-white/30 outline-hidden transition-all duration-300 focus:bg-white/10 focus:border-white/30 focus:ring-2 focus:ring-white/20"
                 required
+                className="w-full border-b border-gray-300 py-3 focus:outline-none focus:border-[#2874f0] peer transition-all text-sm"
+                placeholder=" "
               />
+              <label className="absolute left-0 top-3 text-gray-500 text-sm transition-all pointer-events-none peer-focus:-top-4 peer-focus:text-xs peer-focus:text-[#2874f0] peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:text-xs">
+                Enter Password
+              </label>
             </div>
 
-            {/* Role Field */}
-            <div className="group">
-              <label className="block text-sm font-semibold text-white/90 mb-2 transition-colors group-focus-within:text-white">
-                Role
-              </label>
+            <div className="relative">
               <select
                 name="role"
                 value={formData.role}
                 onChange={handleChange}
-                className="w-full px-5 py-3.5 bg-white/5 border border-white/10 rounded-2xl text-white outline-hidden transition-all duration-300 focus:bg-white/10 focus:border-white/30 focus:ring-2 focus:ring-white/20 appearance-none cursor-pointer [&>option]:bg-purple-800 [&>option]:text-white"
-                required
+                className="w-full border-b border-gray-300 py-3 focus:outline-none focus:border-[#2874f0] bg-transparent text-sm text-gray-800"
               >
                 <option value="USER">USER</option>
                 <option value="ADMIN">ADMIN</option>
               </select>
+              <label className="absolute left-0 -top-4 text-xs text-[#2874f0]">
+                Select Role
+              </label>
             </div>
+
+            <p className="text-[12px] text-gray-500 leading-relaxed pt-4">
+              By continuing, you agree to Flipkart's <a href="#" className="text-[#2874f0]">Terms of Use</a> and <a href="#" className="text-[#2874f0]">Privacy Policy</a>.
+            </p>
 
             <button
               type="submit"
-              className="w-full py-4 bg-white text-indigo-600 font-bold rounded-2xl shadow-lg hover:shadow-white/10 hover:translate-y-[-2px] active:translate-y-[1px] transition-all duration-300 transform mt-4"
+              className="w-full py-3.5 bg-[#fb641b] text-white font-bold rounded-sm shadow-md hover:bg-[#e65c19] transition-colors text-sm uppercase tracking-wider"
             >
-              Sign Up
+              Continue
             </button>
           </form>
 
-          <div className="mt-8 pt-6 border-t border-white/10 text-center">
-            <p className="text-white/60 font-medium text-sm">
-              Already have an account?{" "}
-              <Link href="/Login" className="text-white font-bold hover:underline transition-all">
-                Sign In
-              </Link>
-            </p>
+          <div className="mt-auto text-center">
+            <Link href="/Login" className="w-full py-3 border border-gray-200 text-[#2874f0] text-sm font-bold shadow-sm hover:shadow-md transition-all inline-block bg-white">
+              Existing User? Log in
+            </Link>
           </div>
         </div>
       </div>
