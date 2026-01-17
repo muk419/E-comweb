@@ -109,10 +109,11 @@ const GuestDashboard = () => {
 
           {/* Nav Items */}
           <div className="flex items-center ml-auto space-x-8 text-sm font-semibold">
-            <Link href="/login">
-              <button className="bg-white text-[#2874f0] px-10 py-1.5 rounded-sm font-bold shadow-sm hover:bg-gray-50 transition-colors">
-                Login
-              </button>
+            <Link
+              href="/login"
+              className="bg-white text-[#2874f0] px-10 py-1.5 rounded-sm font-bold shadow-sm hover:bg-gray-50 transition-colors inline-block text-center"
+            >
+              Login
             </Link>
             <div className="flex items-center cursor-pointer">
               <span>Become a Seller</span>
@@ -171,10 +172,11 @@ const GuestDashboard = () => {
           {/* Section Header & Left Promo */}
           <div className="w-full md:w-64 p-6 flex flex-col items-center justify-center text-center border-r border-gray-100">
             <h2 className="text-[22px] font-medium mb-4">Best of Electronics</h2>
-            <Link href="/login">
-              <button className="bg-[#2874f0] text-white px-5 py-2 rounded-sm text-sm font-bold shadow-md">
-                VIEW ALL
-              </button>
+            <Link
+              href="/login"
+              className="bg-[#2874f0] text-white px-5 py-2 rounded-sm text-sm font-bold shadow-md inline-block text-center hover:bg-[#1a5abd] transition-colors"
+            >
+              VIEW ALL
             </Link>
             <div className="mt-auto pt-8">
               <img src="https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=300&h=300&fit=crop&q=80" alt="Promo" className="w-full h-auto" />
